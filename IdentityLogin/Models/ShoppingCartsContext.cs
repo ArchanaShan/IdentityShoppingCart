@@ -35,8 +35,6 @@ public partial class ShoppingCartsContext : DbContext
 
     public virtual DbSet<ProductsCategory> ProductsCategories { get; set; }
 
-    public virtual DbSet<UserDetail> UserDetails { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ShoppingCarts;Integrated Security=True;");
@@ -128,10 +126,7 @@ public partial class ShoppingCartsContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order__UserId__6FE99F9F");
+            
         });
 
         modelBuilder.Entity<OrderDetail>(entity =>
@@ -194,26 +189,7 @@ public partial class ShoppingCartsContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<UserDetail>(entity =>
-        {
-            entity.HasKey(e => e.UserId).HasName("PK__tmp_ms_x__1788CC4C7F6A1530");
-
-            entity.ToTable("UserDetail");
-
-            entity.Property(e => e.Address).HasMaxLength(50);
-            entity.Property(e => e.CreatedBy).HasMaxLength(50);
-            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
-            entity.Property(e => e.EmailAddress).HasMaxLength(50);
-            entity.Property(e => e.FirstName).HasMaxLength(50);
-            entity.Property(e => e.LastLoggedIn).HasColumnType("datetime");
-            entity.Property(e => e.LastName).HasMaxLength(50);
-            entity.Property(e => e.ModifiedBy).HasMaxLength(50);
-            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
-            entity.Property(e => e.Password)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.Phone).HasMaxLength(50);
-        });
+       
 
         OnModelCreatingPartial(modelBuilder);
     }

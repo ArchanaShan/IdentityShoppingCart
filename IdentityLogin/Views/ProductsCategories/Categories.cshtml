@@ -83,6 +83,7 @@
                 });
 
                 if (response.status == 200) {
+                    console.log("###################################");
                     var result = await response.json();
                     var cartCountEl = document.getElementById("cartCountBadge");
                     cartCountEl.innerHTML = result;
